@@ -107,34 +107,14 @@
 }
 - (void)jhResetFrame
 {
-    CGRect frame1 = _upMaskView.frame;
-    frame1.size.height +=1;
-    _upMaskView.frame = frame1;
-    
-    if (_sandView.frame.size.height < self.frame.size.height*0.5) {
-        CGRect frame2 = _sandView.frame;
-        frame2.size.height += 5;
-        _sandView.frame = frame2;
-    }
-    else
-    {
-        CGRect frame2 = _sandView.frame;
-        frame2.size.height += 5;
-        _sandView.frame = frame2;
-        
-        CGRect frame3 = _downMaskView.frame;
-        frame3.size.height -=1.5;
-        _downMaskView.frame = frame3;
-    }
-    
     if (_upMaskView.frame.size.height >= self.frame.size.height*0.5) {
         self.timer.fireDate = [NSDate distantFuture];
-        [UIView animateWithDuration:0.2 animations:^{
+        [UIView animateWithDuration:0.25 animations:^{
             self.transform = CGAffineTransformMakeRotation(M_PI);
         } completion:^(BOOL finished) {
             self.transform = CGAffineTransformIdentity;
             CGRect frame1 = _upMaskView.frame;
-            frame1.size.height =0;
+            frame1.size.height = 0;
             _upMaskView.frame = frame1;
             
             CGRect frame2 = _sandView.frame;
@@ -145,8 +125,28 @@
             frame3.origin.y = self.frame.size.height*0.5;
             frame3.size.height = self.frame.size.height*0.5;
             _downMaskView.frame = frame3;
-            self.timer.fireDate = [NSDate distantPast];
         }];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.timer.fireDate = [NSDate distantPast];
+        });
+        
+    }else{
+        CGRect frame1 = _upMaskView.frame;
+        frame1.size.height +=1;
+        _upMaskView.frame = frame1;
+        
+        if (_sandView.frame.size.height < self.frame.size.height*0.5) {
+            CGRect frame2 = _sandView.frame;
+            frame2.size.height += 5;
+            _sandView.frame = frame2;
+        }
+        else
+        {
+            CGRect frame3 = _downMaskView.frame;
+            frame3.size.height -=1.5;
+            _downMaskView.frame = frame3;
+        }
     }
 }
 - (NSTimer *)timer{
