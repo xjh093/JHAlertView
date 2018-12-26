@@ -1,7 +1,10 @@
 # JHAlertView
 Just a HUD
+- 沙漏效果
 
-# What it look like?
+---
+
+# What
 
 ```
 XX_HUD_SHOW_TEXT_ONLY(@"这个很好用很给力！很好用很给力", 2, self.view)
